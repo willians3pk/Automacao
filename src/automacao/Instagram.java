@@ -54,16 +54,17 @@ public class Instagram {
             String titulo;
             titulo = browser.getTitle();
             System.out.println("Pagina: " + titulo);
+            
             // ----- Tela Salvar suas informações de Login ----- //
             browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             browser.findElement(By.xpath("//*[@id=\"react-root\"]/section/main/div/div/div/section/div/button")).click();// botao salvar informações
 
-            // ----- Tela Turn on Notificação ------ //
+            // ----- Tela Turn on Notificação ------ //;
             WebDriverWait wait = new WebDriverWait(browser, 10);
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[4]/div/div/div/div[3]/button[2]"))); // espera botao not now ficar visivel;
             browser.findElement(By.xpath("/html/body/div[4]/div/div/div/div[3]/button[2]")).click(); // botao not now;
 
-            // ----- Perfil do usuario Instagram ---- //    
+//            // ----- Perfil do usuario Instagram ---- //    
             browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             String nomePerfil = browser.findElement(By.xpath("//*[@id=\"react-root\"]/section/main/section/div[3]/div[1]/div/div[2]/div[2]")).getText();
 
