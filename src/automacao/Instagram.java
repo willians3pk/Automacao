@@ -98,7 +98,7 @@ public class Instagram {
 
         try {
             WebDriverWait wait2 = new WebDriverWait(browser, 10);
-            wait2.until(ExpectedConditions.visibilityOfElementLocated(By.id("conectar_step_4")));// ferifica se o botão Ver link está visivel
+            wait2.until(ExpectedConditions.visibilityOfElementLocated(By.id("iniciarTarefas")));// ferifica se o botão iniciar está visivel
             browser.findElement(By.id("iniciarTarefas")).click(); // clica no botão iniciar;
         } catch (Exception e) {
             System.out.println("Nao foi possivel clicar no botao iniciar " + e);
@@ -115,6 +115,8 @@ public class Instagram {
             WebElement verlink = browser.findElement(By.id("conectar_step_4")); // pega o texto do botao Ver link, e verifica se ele está visivel
             System.out.println(verlink.getText() + " Visivel");
             verlink.click();
+            Thread.sleep(1000);
+            
             
         } catch (Exception e) {
             System.out.println(e);
@@ -122,25 +124,25 @@ public class Instagram {
         }
 
         try {           
-            novaAba = new ArrayList<>(browser.getWindowHandles());
+            novaAba = new ArrayList<String>(browser.getWindowHandles());
             browser.switchTo().window(novaAba.get(2));
-            browser.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+            Thread.sleep(2000);
+            browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             WebElement element = browser.findElement(By.xpath("//*[contains(text(), 'Follow')]"));
             String textoBotao = browser.findElement(By.xpath("//*[contains(text(), 'Follow')]")).getText();
             System.out.println("Texto do botao " + textoBotao);
             element.click();
             System.out.println(element);
             Thread.sleep(2000);
-            browser.switchTo().window(novaAba.get(2)).close();
-//            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-//            browser.quit();
-//            
-//            browser.switchTo().window(novaAba.get(1));
-//            browser.findElement(By.xpath("//*[@id=\"conectar_step_5\"]/button")).click();
-//            System.out.println("Confirmado com Sucesso!");
+            
+            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+            browser.switchTo().window(novaAba.get(2)).close(); // fecha a Aba do instagram;
+            browser.switchTo().window(novaAba.get(1)); // volta pra pagina do Dizu;
+            browser.findElement(By.xpath("//*[@id=\"conectar_step_5\"]/button")).click(); // clica no botao confirmar;
+            System.out.println("Confirmado com Sucesso!");
             
         } catch (Exception e) {
-            System.out.println("Erro elemento nao encontrado! " + e);
+            System.out.println("Erro elemento Follow nao encontrado! " + e);
         }
 
 //        try {

@@ -44,15 +44,17 @@ public class Automacao {
         r.keyPress(KeyEvent.VK_T);
         r.keyRelease(KeyEvent.VK_CONTROL);
         r.keyRelease(KeyEvent.VK_T);
-        List<String> novaAba = new ArrayList<>(browser.getWindowHandles());
+        
+        List<String> tabs = new ArrayList<>(browser.getWindowHandles());
         
         // ----- Nova Aba ------ //
         Dizu dizu = new Dizu();
         dizu.setLoginDizu(loginDizu);
         dizu.setSenhaDizu(senhaDizu);
+        dizu.setNovaAba(tabs);
         dizu.setBrowser(browser);
-        dizu.setNovaAba(novaAba);
-        inst.setNovaAba(novaAba);
+        
+        inst.setNovaAba(tabs);
         dizu.login();
 //        dizu.paginaConectarGanhar();
 
