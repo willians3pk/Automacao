@@ -1,6 +1,7 @@
 package automacao;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +14,7 @@ public class Dizu {
     private WebDriver browser;
     private String loginDizu;
     private String senhaDizu;
+    private List<String> novaAba;
 
     public Dizu() {
     }
@@ -41,8 +43,16 @@ public class Dizu {
         this.senhaDizu = senhaDizu;
     }
 
+    public List<String> getNovaAba() {
+        return novaAba;
+    }
+
+    public void setNovaAba(List<String> novaAba) {
+        this.novaAba = novaAba;
+    }
+
     public void login() {
-        ArrayList<String> novaAba = new ArrayList<>(browser.getWindowHandles());
+        
         browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar todos os elementos da pagina;
         browser.switchTo().window(novaAba.get(1)); // pega o browser da nova aba aberta!!;
 
@@ -66,7 +76,7 @@ public class Dizu {
             browser.get("https://dizu.com.br/painel/conectar");
             
 //            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-//            Select comboBox = new Select(browser.findElement(By.id("conta_id"))); // cria o objeto comboBox;
+//            Select comboBox = new Select(browser.findElement(By.id("instagram_id"))); // cria o objeto comboBox;
 //            comboBox.selectByValue("38456053026"); // seleciona o perfil da comboBox;
 
 //            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
