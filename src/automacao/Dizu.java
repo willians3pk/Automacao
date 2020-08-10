@@ -52,7 +52,7 @@ public class Dizu {
     }
 
     public void login() {
-        novaAba = new ArrayList<String>(browser.getWindowHandles());
+        novaAba = new ArrayList<>(browser.getWindowHandles());
         browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar todos os elementos da pagina;
         browser.switchTo().window(novaAba.get(1)); // pega o browser da nova aba aberta!!;
 

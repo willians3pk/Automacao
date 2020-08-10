@@ -3,7 +3,9 @@ package automacao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import kotlin.coroutines.experimental.ContinuationInterceptor;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,6 +19,7 @@ public class Instagram {
     private String loginInstagram;
     private String senhaInstagram;
     private List<String> novaAba;
+
     public Instagram() {
     }
 
@@ -87,8 +90,8 @@ public class Instagram {
             String titulo1;
             titulo1 = browser.getTitle();
             System.out.println("Pagina: " + titulo1);
-            
-       } catch (Exception e) {
+
+        } catch (Exception e) {
 //          botão entrar
             browser.findElement(By.xpath("//*[@id=\"react-root\"]/section/main/article/div[2]/div[1]/div/form/div[4]/button/div")).click();
         }
@@ -111,36 +114,43 @@ public class Instagram {
         Thread.sleep(100);
 
         try {
+
             browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
             WebElement verlink = browser.findElement(By.id("conectar_step_4")); // pega o texto do botao Ver link, e verifica se ele está visivel
             System.out.println(verlink.getText() + " Visivel");
             verlink.click();
             Thread.sleep(1000);
-            
-            
+            System.out.println("Clicando Perfil a ser seguido!");
+            System.out.println("");
+
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Erro ao clicar no Botao ver link");
+            System.out.println("OU voce está sem Tarefas");
         }
 
-        try {           
-            novaAba = new ArrayList<String>(browser.getWindowHandles());
+        try {
+            novaAba = new ArrayList<>(browser.getWindowHandles());
+            browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             browser.switchTo().window(novaAba.get(2));
             Thread.sleep(2000);
-            browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            WebElement element = browser.findElement(By.xpath("//*[contains(text(), 'Follow')]"));
-            String textoBotao = browser.findElement(By.xpath("//*[contains(text(), 'Follow')]")).getText();
-            System.out.println("Texto do botao " + textoBotao);
-            element.click();
-            System.out.println(element);
+
+            String titulo = browser.getTitle();
+            System.out.println("Pagina: " + titulo);
+
+            browser.findElement(By.className("_2dbep")).sendKeys(Keys.TAB, Keys.ENTER); // clica no botao seguir;
+//            WebElement element = browser.findElement(By.xpath("//*[contains(text(), 'Follow')]"));
+//            element.click();
             Thread.sleep(2000);
-            
+
+            System.out.println("Você começou a seguir alguem! \n ");
+
             browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
             browser.switchTo().window(novaAba.get(2)).close(); // fecha a Aba do instagram;
             browser.switchTo().window(novaAba.get(1)); // volta pra pagina do Dizu;
             browser.findElement(By.xpath("//*[@id=\"conectar_step_5\"]/button")).click(); // clica no botao confirmar;
-            System.out.println("Confirmado com Sucesso!");
-            
+            System.out.println("Confirmado com Sucesso! \n");
+
         } catch (Exception e) {
             System.out.println("Erro elemento Follow nao encontrado! " + e);
         }
@@ -153,7 +163,6 @@ public class Instagram {
 //            
 //        } catch (Exception e) {
 //        }
-
     }
 
 }
