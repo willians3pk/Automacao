@@ -21,35 +21,38 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Automacao {
 
     private static WebDriver browser;
-    private static String loginInstagram = "";
-    private static String senhaInstagram = "";
-    private static String loginDizu = "";
-    private static String senhaDizu = "";
+    private static String loginDizu = "Testes3@outlook.com.br";
+    private static String senhaDizu = "Ws@123456789123";
 
     public static void main(String[] args) throws AWTException, InterruptedException {
 
+        List<String> contas = new ArrayList<>();
+        List<String> senhas = new ArrayList<>();
+
+        contas.add("rachin.24");
+        senhas.add("SenhaFake");
+        contas.add("java_020x");
+        senhas.add("SenhaFake");
+
         System.setProperty("webdriver.Chrome.driver", "/usr/bin/chromedriver");
-        
-//        ChromeOptions chromeOptions = new ChromeOptions();
-//        chromeOptions.setHeadless(true);
-//        browser = new ChromeDriver(chromeOptions);
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.setHeadless(true);
+        browser = new ChromeDriver(chromeOptions);
         browser = new ChromeDriver();
 
         // ----- Tela Login do Instagram ----- //
         Instagram inst = new Instagram();
-        inst.setLoginInstagram(loginInstagram);
-        inst.setSenhaInstagram(senhaInstagram);
         inst.setBrowser(browser);
-        inst.login();
 
         // abri uma nova aba no navegador;
-        Robot r = new Robot();
-        r.keyPress(KeyEvent.VK_CONTROL);
-        r.keyPress(KeyEvent.VK_T);
-        r.keyRelease(KeyEvent.VK_CONTROL);
-        r.keyRelease(KeyEvent.VK_T);
+//        Robot r = new Robot();
+//        r.keyPress(KeyEvent.VK_CONTROL);
+//        r.keyPress(KeyEvent.VK_T);
+//        r.keyRelease(KeyEvent.VK_CONTROL);
+//        r.keyRelease(KeyEvent.VK_T);
 
         List<String> novaAba = new ArrayList<>(browser.getWindowHandles());
+//        browser.switchTo().window(novaAba.get(0)).close(); // fecha a aba
 
         // ----- Nova Aba ------ //
         Dizu dizu = new Dizu();
@@ -57,35 +60,39 @@ public class Automacao {
         dizu.setSenhaDizu(senhaDizu);
         dizu.setNovaAba(novaAba);
         dizu.setBrowser(browser);
-
         inst.setNovaAba(novaAba);
-        dizu.login();
+        
+        
+        while (true) {
+            
+            inst.login(contas.get(0), senhas.get(0));
+            dizu.login();
+            dizu.paginaConectarGanhar();
 
-        for (int i = 0; i < 1; i++) {
-
-            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar todos os elementos da pagina;
-            browser.findElement(By.className("dizu-flame")); // procura o elemento na pagina, se ele for encontrado, executara a linha seguinte;
-            browser.get("https://dizu.com.br/painel/conectar");
+            for (int j = 0; j < 2; j++) {
+                inst.seguirUsuario(contas.get(0));
+            }
+            inst.deslogar(contas.get(0)); // desloga a conta do instagram;
 
             browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar os elementos da pagina;
-            WebElement comboBox = browser.findElement(By.id("instagram_id")); // cria o objeto comboBox;
-            for (WebElement usuarios : comboBox.findElements(By.tagName("option"))) {
-                if (usuarios.getText().contains(inst.getLoginInstagram())) { //se o usuario contem na comboBox ele é selecionado; 
-                    usuarios.click();
-                    System.out.println("usuario selecionado!");
-                    for (int j = 0; j < 10; j++) {
-                        inst.seguirUsuario();
-                    }
+            browser.get("https://www.instagram.com/accounts/login/?hl=pt-br");
 
-                    break;
-                }
+            inst.login(contas.get(1), senhas.get(1));
+            System.out.println("logado com sucesso!");
+            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar os elementos da pagina;
+   
+            dizu.login();
+            dizu.paginaConectarGanhar();
+            
+            for (int i = 0; i < 2; i++) {
+                inst.seguirUsuario(contas.get(1));
             }
-
+            inst.deslogar(contas.get(1));
+            
+            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar os elementos da pagina;
+            browser.get("https://www.instagram.com/accounts/login/?hl=pt-br");
+            
         }
-
-//        browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar todos os elementos da pagina;
-//        Thread.sleep(100);
-//        browser.findElement(By.xpath("//*[contains(text(), 'Follow')]")).click();
     }
 
 }

@@ -16,8 +16,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Instagram {
 
     private WebDriver browser;
-    private String loginInstagram;
-    private String senhaInstagram;
     private List<String> novaAba;
 
     public Instagram() {
@@ -31,22 +29,6 @@ public class Instagram {
         this.browser = browser;
     }
 
-    public String getLoginInstagram() {
-        return loginInstagram;
-    }
-
-    public void setLoginInstagram(String loginInstagram) {
-        this.loginInstagram = loginInstagram;
-    }
-
-    public String getSenhaInstagram() {
-        return senhaInstagram;
-    }
-
-    public void setSenhaInstagram(String senhaInstagram) {
-        this.senhaInstagram = senhaInstagram;
-    }
-
     public List<String> getNovaAba() {
         return novaAba;
     }
@@ -55,14 +37,14 @@ public class Instagram {
         this.novaAba = novaAba;
     }
 
-    public void login() {
+    public void login(String usuario, String senha) {
         // ----- Tela Login do Instagram ----- //
         try {
             browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar todos os elementos da pagina;
             System.setProperty("webdriver.Chrome.driver", "/usr/bin/chromedriver");
             browser.get("https://www.instagram.com/accounts/login/?hl=pt-br");
-            browser.findElement(By.name("username")).sendKeys(loginInstagram); // campo usuario
-            browser.findElement(By.name("password")).sendKeys(senhaInstagram); // campo senha
+            browser.findElement(By.name("username")).sendKeys(usuario); // campo usuario
+            browser.findElement(By.name("password")).sendKeys(senha); // campo senha
             browser.findElement(By.xpath("//*[@id=\"loginForm\"]/div/div[3]/button/div")).click(); // botão entrar
             String titulo;
             titulo = browser.getTitle();
@@ -72,37 +54,63 @@ public class Instagram {
             browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             browser.findElement(By.xpath("//*[@id=\"react-root\"]/section/main/div/div/div/section/div/button")).click();// botao salvar informações
 
-            // ----- Tela Turn on Notificação ------ //;
+//            // ----- Tela Turn on Notificação ------ //;
             WebDriverWait wait = new WebDriverWait(browser, 10);
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[4]/div/div/div/div[3]/button[2]"))); // espera botao not now ficar visivel;
             browser.findElement(By.xpath("/html/body/div[4]/div/div/div/div[3]/button[2]")).click(); // botao not now;
+            System.out.println("Pronto!");
 
 //            // ----- Perfil do usuario Instagram ---- //    
-            browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            String nomePerfil = browser.findElement(By.xpath("//*[@id=\"react-root\"]/section/main/section/div[3]/div[1]/div/div[2]/div[2]")).getText();
+//            browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//            String nomePerfil = browser.findElement(By.xpath("//*[@id=\"react-root\"]/section/main/section/div[3]/div[1]/div/div[2]/div[2]")).getText();
+//
+//            if (nomePerfil.equals(usuario)) {
+//                System.out.println("Elemento encontrado");
+//            } else {
+//                System.out.println("não encontramos o elemento");
+//            }
 
-            if (nomePerfil.equals("rachin.24")) {
-                System.out.println("Elemento encontrado");
-            } else {
-                System.out.println("não encontramos o elemento");
-            }
-
-            String titulo1;
-            titulo1 = browser.getTitle();
-            System.out.println("Pagina: " + titulo1);
-
+            System.out.println("usuario logado com SUCESSO!");
+            
         } catch (Exception e) {
 //          botão entrar
-            browser.findElement(By.xpath("//*[@id=\"react-root\"]/section/main/article/div[2]/div[1]/div/form/div[4]/button/div")).click();
+            System.out.println("erro "+e);
+//            browser.findElement(By.xpath("//*[@id=\"react-root\"]/section/main/article/div[2]/div[1]/div/form/div[4]/button/div")).click();
         }
     }
 
-    public void seguirUsuario() throws InterruptedException {
+    public void deslogar(String usuario){
+        
+        try {
+            browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);      
+            browser.get("https://www.instagram.com/"+usuario);
+            browser.findElement(By.className("wpO6b")).click();
+            browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            browser.findElement(By.xpath("/html/body/div[4]/div/div/div/div/button[9]")).click();
+            System.out.println("usuario deslogado com sucesso!\n");
+        } catch (Exception e) {
+        }
+        
+        
+    }
+    
+    public void seguirUsuario(String usuario) throws InterruptedException {
 
         try {
+            
+            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar os elementos da pagina;
+            WebElement comboBox = browser.findElement(By.id("instagram_id")); // cria o objeto comboBox;
+            for (WebElement usuarios : comboBox.findElements(By.tagName("option"))) {
+                if (usuarios.getText().contains(usuario)) {
+                    usuarios.click();   //seleciona o usuario na comboBox;
+                    System.out.println("usuario selecionado!");
+                }
+            }
+            
             WebDriverWait wait2 = new WebDriverWait(browser, 10);
             wait2.until(ExpectedConditions.visibilityOfElementLocated(By.id("iniciarTarefas")));// ferifica se o botão iniciar está visivel
             browser.findElement(By.id("iniciarTarefas")).click(); // clica no botão iniciar;
+            
         } catch (Exception e) {
             System.out.println("Nao foi possivel clicar no botao iniciar " + e);
             System.out.println("Tendando novamente!!");
@@ -125,14 +133,14 @@ public class Instagram {
 
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println("Erro ao clicar no Botao ver link");
-            System.out.println("OU voce está sem Tarefas");
+            System.out.println("\nErro ao clicar no Botao ver link");
+            System.out.println("OU voce está sem Tarefas \n");
         }
 
         try {
             novaAba = new ArrayList<>(browser.getWindowHandles());
             browser.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            browser.switchTo().window(novaAba.get(2));
+            browser.switchTo().window(novaAba.get(1));
             Thread.sleep(2000);
 
             String titulo = browser.getTitle();
@@ -142,14 +150,19 @@ public class Instagram {
 //            WebElement element = browser.findElement(By.xpath("//*[contains(text(), 'Follow')]"));
 //            element.click();
             Thread.sleep(2000);
-
+            
+            String botao = browser.findElement(By.xpath("//*[@id=\"react-root\"]/section/main/div/header/section/div[1]/div[1]/div/button")).getText();
+            System.out.println("Texto do botao: "+botao +"\n");
             System.out.println("Você começou a seguir alguem! \n ");
 
             browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-            browser.switchTo().window(novaAba.get(2)).close(); // fecha a Aba do instagram;
-            browser.switchTo().window(novaAba.get(1)); // volta pra pagina do Dizu;
+            browser.switchTo().window(novaAba.get(1)).close(); // fecha a Aba do instagram;
+            browser.switchTo().window(novaAba.get(0)); // volta pra pagina do Dizu;
+            Thread.sleep(2000);
             browser.findElement(By.xpath("//*[@id=\"conectar_step_5\"]/button")).click(); // clica no botao confirmar;
             System.out.println("Confirmado com Sucesso! \n");
+            Thread.sleep(3000);
+            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
         } catch (Exception e) {
             System.out.println("Erro elemento Follow nao encontrado! " + e);
