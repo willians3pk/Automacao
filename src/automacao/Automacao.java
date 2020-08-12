@@ -21,18 +21,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Automacao {
 
     private static WebDriver browser;
-    private static String loginDizu = "Testes3@outlook.com.br";
-    private static String senhaDizu = "Ws@123456789123";
+    private static String loginDizu = "";
+    private static String senhaDizu = "";
 
     public static void main(String[] args) throws AWTException, InterruptedException {
 
         List<String> contas = new ArrayList<>();
         List<String> senhas = new ArrayList<>();
 
-        contas.add("rachin.24");
-        senhas.add("SenhaFake");
-        contas.add("java_020x");
-        senhas.add("SenhaFake");
+        contas.add("");
+        senhas.add("");
+        contas.add("");
+        senhas.add("");
 
         System.setProperty("webdriver.Chrome.driver", "/usr/bin/chromedriver");
         ChromeOptions chromeOptions = new ChromeOptions();
