@@ -1,22 +1,12 @@
 package automacao;
 
 import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
-import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Automacao {
 
@@ -38,7 +28,7 @@ public class Automacao {
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setHeadless(true);
         browser = new ChromeDriver(chromeOptions);
-        browser = new ChromeDriver();
+//        browser = new ChromeDriver();
 
         // ----- Tela Login do Instagram ----- //
         Instagram inst = new Instagram();
@@ -50,7 +40,6 @@ public class Automacao {
 //        r.keyPress(KeyEvent.VK_T);
 //        r.keyRelease(KeyEvent.VK_CONTROL);
 //        r.keyRelease(KeyEvent.VK_T);
-
         List<String> novaAba = new ArrayList<>(browser.getWindowHandles());
 //        browser.switchTo().window(novaAba.get(0)).close(); // fecha a aba
 
@@ -61,37 +50,36 @@ public class Automacao {
         dizu.setNovaAba(novaAba);
         dizu.setBrowser(browser);
         inst.setNovaAba(novaAba);
-        
-        
+
         while (true) {
-            
-            inst.login(contas.get(0), senhas.get(0));
-            dizu.login();
-            dizu.paginaConectarGanhar();
-
-            for (int j = 0; j < 2; j++) {
-                inst.seguirUsuario(contas.get(0));
-            }
-            inst.deslogar(contas.get(0)); // desloga a conta do instagram;
-
-            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar os elementos da pagina;
-            browser.get("https://www.instagram.com/accounts/login/?hl=pt-br");
 
             inst.login(contas.get(1), senhas.get(1));
-            System.out.println("logado com sucesso!");
-            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar os elementos da pagina;
-   
             dizu.login();
             dizu.paginaConectarGanhar();
-            
-            for (int i = 0; i < 2; i++) {
+
+            for (int j = 0; j < 6; j++) {
                 inst.seguirUsuario(contas.get(1));
             }
-            inst.deslogar(contas.get(1));
-            
+            inst.deslogar(contas.get(1)); // desloga a conta do instagram;
+
             browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar os elementos da pagina;
             browser.get("https://www.instagram.com/accounts/login/?hl=pt-br");
-            
+
+            inst.login(contas.get(0), senhas.get(0));
+            System.out.println("logado com sucesso!");
+            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar os elementos da pagina;
+
+            dizu.login();
+            dizu.paginaConectarGanhar();
+
+            for (int i = 0; i < 6; i++) {
+                inst.seguirUsuario(contas.get(0));
+            }
+            inst.deslogar(contas.get(0));
+
+            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar os elementos da pagina;
+            browser.get("https://www.instagram.com/accounts/login/?hl=pt-br");
+
         }
     }
 

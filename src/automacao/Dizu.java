@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Dizu {
 
@@ -71,6 +68,7 @@ public class Dizu {
     public void paginaConectarGanhar() throws InterruptedException {
 
         try {
+            Thread.sleep(2000);
             browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar todos os elementos da pagina;
             browser.findElement(By.className("dizu-flame")); // procura o elemento na pagina, se ele for encontrado, executara a linha seguinte;
             browser.get("https://dizu.com.br/painel/conectar");
