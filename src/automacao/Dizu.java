@@ -48,7 +48,7 @@ public class Dizu {
         this.novaAba = novaAba;
     }
 
-    public void login() {
+    public void login() throws InterruptedException {
         novaAba = new ArrayList<>(browser.getWindowHandles());
         browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar todos os elementos da pagina;
         browser.switchTo().window(novaAba.get(0)); // pega o browser da nova aba aberta!!;
@@ -61,7 +61,10 @@ public class Dizu {
 
         String titulo1;
         titulo1 = browser.getTitle();
-        System.out.println("Pagina: "+titulo1);
+        System.out.println("Pagina: " + titulo1);
+
+        Thread.sleep(4000);
+        browser.get("https://dizu.com.br/painel/conectar");
 
     }
 
@@ -71,16 +74,15 @@ public class Dizu {
             Thread.sleep(2000);
             browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);// espera carregar todos os elementos da pagina;
             browser.findElement(By.className("dizu-flame")); // procura o elemento na pagina, se ele for encontrado, executara a linha seguinte;
+            Thread.sleep(2000);
             browser.get("https://dizu.com.br/painel/conectar");
-            
+
 //            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 //            Select comboBox = new Select(browser.findElement(By.id("instagram_id"))); // cria o objeto comboBox;
 //            comboBox.selectByValue("38456053026"); // seleciona o perfil da comboBox;
-
 //            browser.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 //            String verlink = browser.findElement(By.id("conectar_step_4")).getText(); // pega o texto do botao Ver link, e verifica se ele está visivel
 //            System.out.println(verlink + " Visivel");
-
         } catch (Exception e) {
             System.out.println("Erro ao selecionar perfil, ou botao Ver link nao está visivel");
 //            Select comboBox = new Select(browser.findElement(By.id("conta_id"))); // cria o objeto comboBox;
@@ -89,7 +91,7 @@ public class Dizu {
 //            Thread.sleep(1000);// delay
 //            comboBox.selectByValue("38456053026"); // seleciona o perfil da comboBox;
         }
-        
+
 //        try {
 //            WebDriverWait wait2 = new WebDriverWait(browser, 10);
 //            wait2.until(ExpectedConditions.visibilityOfElementLocated(By.id("conectar_step_4")));// ferifica se o botão Ver link está visivel
@@ -100,7 +102,5 @@ public class Dizu {
 //            browser.findElement(By.id("conectar_step_4")).click(); // clica no botão ver link;
 //        }
     }
-    
-    
-    
+
 }
